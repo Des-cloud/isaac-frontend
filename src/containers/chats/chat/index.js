@@ -8,20 +8,37 @@ export default function Chat(props) {
   const [chat, setChat] = useState({});
 
   useEffect(() => {
-    console.log("Props chat", props);
     async function initialize() {
       try {
         setIsLoading(true);
-        const response = await axios.get(
-          `http://localhost:4090/api/chats/${props.id}`,
-          {
-            credentials: "same-origin",
-            headers: {
-              Authorization: `Bearer ${props.session.authToken}`,
+        let response;
+        if (props.username) {
+          response = await axios.post(
+            `http://localhost:4090/api/chats`,
+            {
+              title: `${props.session.username} and ${props.username} chat`,
+              host: props.session.username,
+              members: [props.username],
             },
-          }
-        );
-        // console.log("A chat", response);
+            {
+              credentials: "same-origin",
+              headers: {
+                Authorization: `Bearer ${props.session.authToken}`,
+              },
+            }
+          );
+        } else {
+          response = await axios.get(
+            `http://localhost:4090/api/chats/${props.id}`,
+            {
+              credentials: "same-origin",
+              headers: {
+                Authorization: `Bearer ${props.session.authToken}`,
+              },
+            }
+          );
+        }
+
         let data = response.data;
         if (response.status !== 200) {
           throw new Error(data.message);
@@ -29,14 +46,16 @@ export default function Chat(props) {
 
         setChat(data);
       } catch (err) {
-        console.error(`Failed to initialize chat- ${props.id}. ${err}`);
+        console.error(
+          `Failed to initialize chat- ${props.id ?? props.username}. ${err}`
+        );
       } finally {
         setIsLoading(false);
       }
     }
 
     initialize();
-  }, [props.id, props.session]);
+  }, [props]);
 
   if (props.listView) {
     return null;

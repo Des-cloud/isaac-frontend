@@ -60,13 +60,13 @@ export default function ChatList(props) {
         <Row>
           <Col className='px-0'>
             <List className='md-list'>
-              {chats.map((appointment, index) => (
+              {chats.map((chat, index) => (
                 <ListItem key={index} className='p-0 my-1'>
                   <h3 className='my-0'>
                     <Link
-                      to={`/chats/${appointment.id}`}
+                      to={`/chats/${chat._id}`}
                       className='text-truncate font-weight-bold'>
-                      {appointment.title}
+                      {chat.title}
                     </Link>
                   </h3>
                 </ListItem>

@@ -7,25 +7,43 @@ const ChatView = lazy(() => import("./views/chatView"));
 
 export default function ChatApp(props) {
   const session = useSelector((s) => s.session);
-  console.log("Please", props.match);
   return (
     <Suspense fallback={<Loader isLoading={true} />}>
       <Switch>
         <Route
           path={`${props.match.path}/:id`}
+          exact
           render={(props) => (
             <ChatView
               {...props}
               id={props.match.params.id}
               session={session}
               isList={false}
+              isCreate={false}
+            />
+          )}
+        />
+        <Route
+          path={`${props.match.path}/create/:username`}
+          render={(props) => (
+            <ChatView
+              {...props}
+              isList={false}
+              session={session}
+              isCreate={true}
+              username={props.match.params.username}
             />
           )}
         />
         <Route
           path=''
           render={(props) => (
-            <ChatView {...props} isList={true} session={session} />
+            <ChatView
+              {...props}
+              isList={true}
+              session={session}
+              isCreate={false}
+            />
           )}
         />
       </Switch>

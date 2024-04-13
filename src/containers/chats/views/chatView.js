@@ -7,6 +7,6 @@ export default function ChatView(props) {
   return props.isList ? (
     <ChatList session={props.session} />
   ) : (
-    <Chat session={props.session} id={props.id} listView={false} />
+    <Chat {...props} listView={false} />
   );
 }

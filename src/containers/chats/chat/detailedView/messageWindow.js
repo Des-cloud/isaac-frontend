@@ -9,9 +9,9 @@ export default function MessageWindow(props) {
 
   const [state, setState] = useState({
     messages: [],
-    limit: 10,
+    limit: 20,
   });
-  // console.log("Message window", props);
+
   useEffect(() => {
     const currentBottomRef = bottomRef.current;
 
@@ -42,7 +42,6 @@ export default function MessageWindow(props) {
   }, [props.channel]);
 
   async function appendMessages() {
-    // console.log("I was clicked");
     try {
       if (props.chat) {
         const url = `http://localhost:4090/api/chats/${props.chat._id}/messages`;
@@ -62,7 +61,7 @@ export default function MessageWindow(props) {
             },
           }
         );
-        console.log("Charley", messagesResponse);
+
         let data = messagesResponse.data;
         if (messagesResponse.status !== 200) {
           throw new Error(data.message);
@@ -94,7 +93,6 @@ export default function MessageWindow(props) {
     if (newMessages.info) {
       newMessages = newMessages.info;
     } else {
-      console.log("No info. Most likely new");
     }
 
     let timestamp = new Date(newMessages.timestamp);
